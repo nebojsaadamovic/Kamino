@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activitykamino.FragmentKamino"
+    android:background="#B88697">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- This Horizontal Layout will contain the TextViews and ImageView -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- LinearLayout for TextViews -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/name_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:paddingBottom="8dp"
+                    android:textColor="#ffffff" />
+
+                <TextView
+                    android:id="@+id/rotation_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:paddingBottom="8dp"
+                    android:textColor="#ffffff" />
+
+                <TextView
+                    android:id="@+id/orbital_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:paddingBottom="8dp"
+                    android:textColor="#ffffff" />
+
+                <TextView
+                    android:id="@+id/diameter_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:paddingBottom="8dp"
+                    android:textColor="#ffffff" />
+
+                <TextView
+                    android:id="@+id/climate_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:paddingBottom="8dp"
+                    android:textColor="#ffffff" />
+
+                <TextView
+                    android:id="@+id/gravity_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:paddingBottom="8dp"
+                    android:textColor="#ffffff" />
+
+                <TextView
+                    android:id="@+id/terrain_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:paddingBottom="8dp"
+                    android:textColor="#ffffff" />
+
+                <TextView
+                    android:id="@+id/surface_water_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:paddingBottom="8dp"
+                    android:textColor="#ffffff" />
+
+                <TextView
+                    android:id="@+id/population_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:paddingBottom="8dp"
+                    android:textColor="#ffffff" />
+
+                <TextView
+                    android:id="@+id/likes_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:paddingBottom="8dp"
+                    android:textColor="#ffffff" />
+
+            </LinearLayout>
+
+            <!-- ImageView placed horizontally to the right of TextViews -->
+            <ImageView
+                android:id="@+id/imageViewPlanet_id"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/app_name" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>
