@@ -1,7 +1,6 @@
 package com.masterandroid.kamino.data.api;
 
 import com.masterandroid.kamino.data.model.LikeRequest;
-import com.masterandroid.kamino.data.model.LikeResponse;
 import com.masterandroid.kamino.data.model.Planet;
 import com.masterandroid.kamino.data.model.Resident;
 

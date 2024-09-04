@@ -125,12 +125,12 @@ public class FragmentKamino extends Fragment {
                         textViewPlanetLikes.setText("Likes: "+likes);
                         String imageUrl = planet.getImageUrl(); // Your URL here
                        // String testUrl = "https://via.placeholder.com/150";
-                        Glide.with(getContext())
-                                .load(imageUrl)
-                                .apply(new RequestOptions()
-                                        .placeholder(R.drawable.solid_color_placeholder)
-                                        .error(R.drawable.kaminostar))
-                                .into(imgViewPlanet);
+//                        Glide.with(getContext())
+//                                .load(imageUrl)
+//                                .apply(new RequestOptions()
+//                                        .placeholder(R.drawable.solid_color_placeholder)
+//                                        .error(R.drawable.kaminostar))
+//                                .into(imgViewPlanet);
                     } else {
                         Log.d("FragmentKamino", "Response body is null");
                     }
