@@ -47,6 +47,12 @@ public class MyAdaptorResident extends RecyclerView.Adapter<MyAdaptorResident.My
                 .error(R.drawable.solid_color_placeholder)
                 .into(holder.imageView);
 
+        if (position % 2 == 1) {
+            holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.silver));
+        } else {
+            holder.itemView.setBackgroundColor(context.getResources().getColor(android.R.color.white));
+        }
+
         holder.btnViewDetails.setOnClickListener(v -> {
             Intent intent = new Intent(context, ResidentDetailActivity.class);
             intent.putExtra("name", resident.getName());
