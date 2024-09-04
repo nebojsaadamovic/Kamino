@@ -21,7 +21,6 @@ import com.masterandroid.kamino.R;
 import com.masterandroid.kamino.data.api.StarWarsApiService;
 import com.masterandroid.kamino.data.model.LikeRequest;
 import com.masterandroid.kamino.data.model.Planet;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -124,13 +123,14 @@ public class FragmentKamino extends Fragment {
                         likes= planet.getLikes();
                         textViewPlanetLikes.setText("Likes: "+likes);
                         String imageUrl = planet.getImageUrl(); // Your URL here
-                       // String testUrl = "https://via.placeholder.com/150";
-//                        Glide.with(getContext())
-//                                .load(imageUrl)
-//                                .apply(new RequestOptions()
-//                                        .placeholder(R.drawable.solid_color_placeholder)
-//                                        .error(R.drawable.kaminostar))
-//                                .into(imgViewPlanet);
+                        Glide.with(getContext())
+                                .load(imageUrl)
+                                .apply(new RequestOptions()
+                                        .placeholder(R.drawable.solid_color_placeholder)
+                                        .error(R.drawable.kaminostar))
+                                .into(imgViewPlanet);
+
+
                     } else {
                         Log.d("FragmentKamino", "Response body is null");
                     }
@@ -138,7 +138,6 @@ public class FragmentKamino extends Fragment {
                     Log.d("FragmentKamino", "Response not successful: " + response.code());
                 }
             }
-
             @Override
             public void onFailure(Call<Planet> call, Throwable t) {
                 Log.e("FragmentKamino", "API call failure", t);
@@ -151,20 +150,24 @@ public class FragmentKamino extends Fragment {
     private void clearPlanetData() {
         textViewPlanetName.setText("");
         textViewPlanetRotation.setText("");
+        textViewPlanetOrbital.setText("");
+        textViewPlanetDiameter.setText("");
+        textViewPlanetClimate.setText("");
+        textViewPlanetGravity.setText("");
+        textViewPlanetTerrain.setText("");
+        textViewPlanetSurfaceWater.setText("");
+        textViewPlanetLikes.setText("");
     }
 
 
 
     private void likePlanet() {
-        // Send POST request to like the planet
         LikeRequest likeRequest = new LikeRequest(Integer.parseInt(PLANET_ID));
         Call<Void> call = starWarsApiService.likePlanet(Integer.parseInt(PLANET_ID), likeRequest);
-
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                 if (response.isSuccessful()) {
-                    // Update local state
                     hasLiked = true;
                     likes++;
                     SharedPreferences prefs = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
@@ -178,7 +181,6 @@ public class FragmentKamino extends Fragment {
                     Log.d("FragmentKamino", "Failed to like planet: " + response.code());
                 }
             }
-
             @Override
             public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                 Log.e("FragmentKamino", "Failed to make like request", t);
