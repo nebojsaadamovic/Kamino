@@ -63,7 +63,7 @@ public class MyAdaptorResident extends RecyclerView.Adapter<MyAdaptorResident.My
             intent.putExtra("birth_day", resident.getBirthYear());
             intent.putExtra("gender", resident.getGender());
             intent.putExtra("homeworld", resident.getHomeWorld());
-            intent.putExtra("image_url", resident.getHomeWorld()); //also this is url img
+            intent.putExtra("image_url", resident.getImageUrl());
             context.startActivity(intent);
         });
     }
@@ -75,8 +75,8 @@ public class MyAdaptorResident extends RecyclerView.Adapter<MyAdaptorResident.My
 
     class MyViewHolder extends RecyclerView.ViewHolder
     {
-        TextView textViewName;
-        ImageView imageView;
+        public TextView textViewName;
+        public ImageView imageView;
         Button btnViewDetails;
 
         MyViewHolder(@NonNull View itemView) {

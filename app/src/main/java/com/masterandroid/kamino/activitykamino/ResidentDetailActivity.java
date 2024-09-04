@@ -44,37 +44,23 @@ public class ResidentDetailActivity extends AppCompatActivity {
             String imageUrl = intent.getStringExtra("image_url");
 
 
-            txtNameDetail.setText("Name: "+ name );
-            txtHeightDetail.setText("Height: "+height);
-            txtHairColorDetail.setText("Hair Color: "+ hairColor);
-            txtSkinColorDetail.setText("Skin Color: "+ skinColor);
-            txtEyeColorDetail.setText("Eye Color: "+ eyeColor);
-            txtBirthDayDetail.setText("Birth Day: "+ birthDay );
-            txtGenderDetail.setText("Gender: "+ gender);
+            txtNameDetail.setText("Name: " + name);
+            txtHeightDetail.setText("Height: " + height);
+            txtHairColorDetail.setText("Hair Color: " + hairColor);
+            txtSkinColorDetail.setText("Skin Color: " + skinColor);
+            txtEyeColorDetail.setText("Eye Color: " + eyeColor);
+            txtBirthDayDetail.setText("Birth Day: " + birthDay);
+            txtGenderDetail.setText("Gender: " + gender);
 
 
-            if (imageUrl != null && !imageUrl.isEmpty()) {
-                Glide.with(this)
-                        .load(imageUrl)
-                        .placeholder(R.drawable.myprofile)
-                        .error(R.drawable.solid_color_placeholder)
-                        .into(imgDetail);
-            } else {
-                imgDetail.setImageResource(R.drawable.myprofile);
-            }
+            Glide.with(getApplicationContext())
+                    .load(imageUrl)
+                    .placeholder(R.drawable.myprofile)
+                    .error(R.drawable.solid_color_placeholder)
+                    .into(imgDetail);
 
-            String homeworldUrl = intent.getStringExtra("homeworld");
-            if (homeworldUrl != null && !homeworldUrl.isEmpty()) {
-                Glide.with(this)
-                        .load(homeworldUrl)
-                        .placeholder(R.drawable.solid_color_placeholder)
-                        .error(R.drawable.solid_color_placeholder)
-                        .into(imgHomeworldDetail);
-            } else {
-                imgHomeworldDetail.setImageResource(R.drawable.myprofile);
-            }
-        }
 
         }
 
+    }
 }
