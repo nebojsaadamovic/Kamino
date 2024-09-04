@@ -1,6 +1,8 @@
 package com.masterandroid.kamino.activitykamino;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.masterandroid.kamino.R;
 import com.masterandroid.kamino.data.api.StarWarsApiService;
+import com.masterandroid.kamino.data.model.LikeRequest;
 import com.masterandroid.kamino.data.model.Planet;
 
 import retrofit2.Call;
@@ -37,12 +40,15 @@ public class FragmentKamino extends Fragment {
     private TextView textViewPlanetPopulation;
     private TextView textViewPlanetLikes;
     private ImageView imgViewPlanet;
-    Button buttonLike;
-    int likes;
-    private StarWarsApiService starWarsApiService;
+    private Button buttonLike;
+    private boolean hasLiked = false;
+    private int likes = 0;
+    private static final String PREFS_NAME = "app_prefs";
+    private static final String KEY_HAS_LIKED = "has_liked";
+    private static final String KEY_LIKES_COUNT = "likes_count";
     private static final String PLANET_ID = "10";
     private boolean showData = true;
-
+    private StarWarsApiService starWarsApiService;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -79,13 +85,20 @@ public class FragmentKamino extends Fragment {
             clearPlanetData();
         }
 
-        buttonLike.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                likes++;
-                textViewPlanetLikes.setText("Likes: " + likes); // Ensure likes is an integer and not a resource ID
-            }
+
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        hasLiked = prefs.getBoolean(KEY_HAS_LIKED, false);
+        likes = prefs.getInt(KEY_LIKES_COUNT, 0);
+        updateLikesUI();
+
+        if (hasLiked) {
+            buttonLike.setEnabled(false);
+        }
+
+        buttonLike.setOnClickListener(v -> {
+            likePlanet();
         });
+
 
         return view;
     }
@@ -138,6 +151,43 @@ public class FragmentKamino extends Fragment {
     private void clearPlanetData() {
         textViewPlanetName.setText("");
         textViewPlanetRotation.setText("");
+    }
+
+
+
+    private void likePlanet() {
+        // Send POST request to like the planet
+        LikeRequest likeRequest = new LikeRequest(Integer.parseInt(PLANET_ID));
+        Call<Void> call = starWarsApiService.likePlanet(Integer.parseInt(PLANET_ID), likeRequest);
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                if (response.isSuccessful()) {
+                    // Update local state
+                    hasLiked = true;
+                    likes++;
+                    SharedPreferences prefs = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putBoolean(KEY_HAS_LIKED, hasLiked);
+                    editor.putInt(KEY_LIKES_COUNT, likes);
+                    editor.apply();
+                    updateLikesUI();
+                    buttonLike.setEnabled(false);
+                } else {
+                    Log.d("FragmentKamino", "Failed to like planet: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                Log.e("FragmentKamino", "Failed to make like request", t);
+            }
+        });
+    }
+
+    private void updateLikesUI() {
+        textViewPlanetLikes.setText("Likes: " + likes);
     }
 }
 

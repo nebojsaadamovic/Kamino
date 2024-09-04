@@ -19,8 +19,8 @@ public interface StarWarsApiService {
     @GET("planets/{id}")
     Call<Planet> getKaminoPlanet(@Path("id") int id);
 
-    @POST("planets/10/like")
-    Call<LikeResponse> likeKaminoPlanet(@Body LikeRequest body);
+    @POST("planets/{id}/like")
+    Call<Void> likePlanet(@Path("id") int planetId, @Body LikeRequest likeRequest);
 
     @GET
     Call<Resident> getResidentDetails(@Url String url);
