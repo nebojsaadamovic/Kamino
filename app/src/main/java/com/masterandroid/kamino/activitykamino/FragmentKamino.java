@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,10 +37,11 @@ public class FragmentKamino extends Fragment {
     private TextView textViewPlanetPopulation;
     private TextView textViewPlanetLikes;
     private ImageView imgViewPlanet;
-
+    Button buttonLike;
+    int likes;
     private StarWarsApiService starWarsApiService;
-    private static final String PLANET_ID = "10"; // Kamino ID
-    private boolean showData = true; // Defaultna vrednost
+    private static final String PLANET_ID = "10";
+    private boolean showData = true;
 
 
     @SuppressLint("MissingInflatedId")
@@ -59,8 +61,8 @@ public class FragmentKamino extends Fragment {
         textViewPlanetPopulation = view.findViewById(R.id.population_id);
         textViewPlanetLikes = view.findViewById(R.id.likes_id);
         imgViewPlanet = view.findViewById(R.id.imageViewPlanet_id);
+        buttonLike = view.findViewById(R.id.btnlike_id);
 
-        // Initialize Retrofit and API service
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://private-anon-59e7f97310-starwars2.apiary-mock.com/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -68,8 +70,6 @@ public class FragmentKamino extends Fragment {
 
         starWarsApiService = retrofit.create(StarWarsApiService.class);
 
-        // Fetch or clear planet data based on the showData flag
-        // Retrieve showData value from arguments
         if (getArguments() != null) {
             showData = getArguments().getBoolean("showData", true);
         }
@@ -79,14 +79,19 @@ public class FragmentKamino extends Fragment {
             clearPlanetData();
         }
 
+        buttonLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                likes++;
+                textViewPlanetLikes.setText("Likes: " + likes); // Ensure likes is an integer and not a resource ID
+            }
+        });
+
         return view;
     }
 
 
-
-
     private void getKaminoPlanet() {
-
         Call<Planet> call = starWarsApiService.getKaminoPlanet(Integer.parseInt(PLANET_ID));
         call.enqueue(new Callback<Planet>() {
             @Override
@@ -103,7 +108,8 @@ public class FragmentKamino extends Fragment {
                         textViewPlanetTerrain.setText("Terrain: " + planet.getTerrain());
                         textViewPlanetSurfaceWater.setText("Surface Water: " + planet.getSurfaceWater());
                         textViewPlanetPopulation.setText("Population: " + planet.getPopulation());
-                        textViewPlanetLikes.setText("Likes: " + planet.getLikes());
+                        likes= planet.getLikes();
+                        textViewPlanetLikes.setText("Likes: "+likes);
                         String imageUrl = planet.getImageUrl(); // Your URL here
                        // String testUrl = "https://via.placeholder.com/150";
                         Glide.with(getContext())
@@ -112,11 +118,6 @@ public class FragmentKamino extends Fragment {
                                         .placeholder(R.drawable.solid_color_placeholder)
                                         .error(R.drawable.kaminostar))
                                 .into(imgViewPlanet);
-
-
-
-
-
                     } else {
                         Log.d("FragmentKamino", "Response body is null");
                     }
@@ -132,8 +133,9 @@ public class FragmentKamino extends Fragment {
         });
     }
 
-    private void clearPlanetData() {
 
+
+    private void clearPlanetData() {
         textViewPlanetName.setText("");
         textViewPlanetRotation.setText("");
     }
