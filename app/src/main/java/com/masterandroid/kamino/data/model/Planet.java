@@ -1,3 +1,4 @@
+
 package com.masterandroid.kamino.data.model;
 
 import com.google.gson.annotations.SerializedName;
@@ -40,8 +41,8 @@ public class Planet {
         return rotationPeriod;
     }
 
-    public void setRotationPeriod(String rotationPeeriod) {
-        this.rotationPeriod = rotationPeeriod;
+    public void setRotationPeriod(String rotationPeriod) {
+        this.rotationPeriod = rotationPeriod;
     }
 
     public String getOrbitalPeriod() {

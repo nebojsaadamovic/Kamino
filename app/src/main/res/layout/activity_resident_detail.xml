@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@android:color/white"
+    tools:context=".activitykamino.ResidentDetailActivity">
+
+    <ImageView
+        android:id="@+id/img_detail"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="center_horizontal"
+        android:scaleType="centerCrop"
+        android:background="@drawable/rounded_corners"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/txt_name_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/txt_height_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="@color/teal_200"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/txt_hair_color_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="@color/teal_200"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/txt_skin_color_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="@color/teal_200"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/txt_eye_color_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="@color/teal_200"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/txt_birth_day_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="@color/teal_200"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/txt_gender_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="@color/teal_200"
+        android:layout_marginBottom="8dp"/>
+
+    <ImageView
+        android:id="@+id/img_homeworld_detail"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:scaleType="centerCrop"
+        android:layout_marginBottom="16dp"/>
+
+</LinearLayout>

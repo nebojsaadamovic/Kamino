@@ -67,8 +67,7 @@ public class KaminoActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
                 if (id == R.id.residents_id) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_id, new FragmentKamino()).commit();
-                    Toast.makeText(getApplicationContext(), "Resident click", Toast.LENGTH_SHORT).show();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_id, new FragmentResident()).commit();
                     drawerLayout.closeDrawer(GravityCompat.START);
                 } else if (id == R.id.home_id) {
                     Toast.makeText(getApplicationContext(), "Home click", Toast.LENGTH_SHORT).show();
