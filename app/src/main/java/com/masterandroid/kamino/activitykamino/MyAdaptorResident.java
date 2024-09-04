@@ -41,10 +41,10 @@ public class MyAdaptorResident extends RecyclerView.Adapter<MyAdaptorResident.My
         Resident resident = residents.get(position);
         holder.textViewName.setText(resident.getName());
 
-        Glide.with(holder.itemView.getContext())//TODO image not upload
+        Glide.with(holder.itemView.getContext())
                 .load(resident.getImageUrl())
                 .placeholder(R.drawable.myprofile)
-                .error(R.drawable.solid_color_placeholder)
+                .error(R.drawable.myprofile)
                 .into(holder.imageView);
 
         if (position % 2 == 1) {
@@ -62,7 +62,6 @@ public class MyAdaptorResident extends RecyclerView.Adapter<MyAdaptorResident.My
             intent.putExtra("eye_color", resident.getEyeColor());
             intent.putExtra("birth_day", resident.getBirthYear());
             intent.putExtra("gender", resident.getGender());
-            intent.putExtra("homeworld", resident.getHomeWorld());
             intent.putExtra("image_url", resident.getImageUrl());
             context.startActivity(intent);
         });
