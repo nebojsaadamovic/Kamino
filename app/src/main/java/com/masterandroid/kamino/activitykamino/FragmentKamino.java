@@ -44,15 +44,14 @@ public class FragmentKamino extends Fragment {
     private TextView textViewPlanetLikes;
     private ImageView imgViewPlanet;
     private Button buttonLike;
-    private boolean hasLiked = false;
+    private String imageUrl;
+    private StarWarsApiService starWarsApiService;
+
     private int likes = 0;
-    private static final String PREFS_NAME = "app_prefs";
-    private static final String KEY_HAS_LIKED = "has_liked";
-    private static final String KEY_LIKES_COUNT = "likes_count";
     private static final String PLANET_ID = "10";
     private boolean showData = true;
-    private StarWarsApiService starWarsApiService;
-    String imageUrl;
+    public boolean hasLiked = false;
+
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -89,15 +88,8 @@ public class FragmentKamino extends Fragment {
             clearPlanetData();
         }
 
-
-        SharedPreferences prefs = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        hasLiked = prefs.getBoolean(KEY_HAS_LIKED, false);
-        likes = prefs.getInt(KEY_LIKES_COUNT, 0);
-        updateLikesUI();
-
-
         buttonLike.setOnClickListener(v -> {
-            if (hasLiked) {
+            if (!hasLiked) {
                 likePlanet();
             } else {
                 Toast.makeText(getContext(), "You have already liked once", Toast.LENGTH_SHORT).show();
@@ -140,8 +132,6 @@ public class FragmentKamino extends Fragment {
                                             .error(R.drawable.kaminostar))
                                     .into(imgViewPlanet);
                         }
-
-
                     } else {
                         Log.d("FragmentKamino", "Response body is null");
                     }
@@ -171,7 +161,6 @@ public class FragmentKamino extends Fragment {
     }
 
 
-
     private void likePlanet() {
         LikeRequest likeRequest = new LikeRequest(Integer.parseInt(PLANET_ID));
         Call<Void> call = starWarsApiService.likePlanet(Integer.parseInt(PLANET_ID), likeRequest);
@@ -179,16 +168,9 @@ public class FragmentKamino extends Fragment {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                 if (response.isSuccessful()) {
-                    hasLiked = true;
                     likes++;
-                    SharedPreferences prefs = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putBoolean(KEY_HAS_LIKED, hasLiked);
-                    editor.putInt(KEY_LIKES_COUNT, likes);
-                    editor.apply();
-                    updateLikesUI();
-                    hasLiked = false;
-                    //buttonLike.setEnabled(false);
+                    textViewPlanetLikes.setText("Likes: " + likes);
+                    hasLiked = true;
                 } else {
                     Log.d("FragmentKamino", "Failed to like planet: " + response.code());
                 }
@@ -201,8 +183,13 @@ public class FragmentKamino extends Fragment {
     }
 
 
-    private void updateLikesUI() {
-        textViewPlanetLikes.setText("Likes: " + likes);
-    }
+
 }
+
+
+
+
+
+
+
 
