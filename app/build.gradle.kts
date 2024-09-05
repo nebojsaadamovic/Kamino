@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "com.masterandroid.kamino"
-    compileSdk = 34
+    compileSdk  = 34
 
     defaultConfig {
         applicationId = "com.masterandroid.kamino"
@@ -31,20 +31,25 @@ android {
     }
 }
 dependencies {
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
+    implementation(libs.appcompat.v161)
+    implementation(libs.material.v1110)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation ("com.squareup.okhttp3:logging-interceptor:4.9.1")
-    implementation ("com.google.zxing:core:3.4.1")
-    implementation ("com.journeyapps:zxing-android-embedded:4.2.0")
-    compileOnly("org.projectlombok:lombok:1.18.34")
-    implementation ("com.github.bumptech.glide:glide:4.15.1")
-    annotationProcessor ("com.github.bumptech.glide:compiler:4.15.1")
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.junit.v115)
+    androidTestImplementation(libs.espresso.core.v351)
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
+    implementation (libs.logging.interceptor)
+    implementation (libs.core)
+    implementation (libs.zxing.android.embedded)
+    compileOnly(libs.lombok)
+    implementation (libs.glide)
+    annotationProcessor (libs.compiler)
+    implementation(libs.drawerlayout)
+    implementation(libs.material.v190)
+    implementation(libs.appcompat.v160)
+    implementation(libs.core.ktx)
+    implementation(libs.appcompat)
 
 }

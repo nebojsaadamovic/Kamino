@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activitykamino.FragmentKamino"
-    android:background="#B88697">
+    android:background="@drawable/universum_frag">
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -36,8 +36,8 @@ public class FragmentResident extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_resident, container, false);
-        recyclerView = view.findViewById(R.id.recyclerview_id);
 
+        recyclerView = view.findViewById(R.id.recyclerview_id);
         Retrofit retrofitClient = RetrofitClient.getClient();
         if (retrofitClient == null) {
             Log.e("FragmentResident", "Retrofit client is null");

@@ -13,7 +13,7 @@ import com.masterandroid.kamino.R;
 
 public class ResidentDetailActivity extends AppCompatActivity {
 
-    private ImageView imgDetail, imgHomeworldDetail;
+    private ImageView imgDetail;
     private TextView txtNameDetail, txtHeightDetail, txtHairColorDetail, txtSkinColorDetail,
             txtEyeColorDetail, txtBirthDayDetail, txtGenderDetail;
 
@@ -30,7 +30,7 @@ public class ResidentDetailActivity extends AppCompatActivity {
         txtEyeColorDetail = findViewById(R.id.txt_eye_color_detail);
         txtBirthDayDetail = findViewById(R.id.txt_birth_day_detail);
         txtGenderDetail = findViewById(R.id.txt_gender_detail);
-        imgHomeworldDetail = findViewById(R.id.img_homeworld_detail);
+
 
         Intent intent = getIntent();
         if (intent != null) {

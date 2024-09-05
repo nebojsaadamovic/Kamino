@@ -8,9 +8,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -18,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.masterandroid.kamino.R;
+import com.masterandroid.kamino.data.api.Constants;
 import com.masterandroid.kamino.data.api.StarWarsApiService;
 import com.masterandroid.kamino.data.model.LikeRequest;
 import com.masterandroid.kamino.data.model.Planet;
@@ -48,6 +52,7 @@ public class FragmentKamino extends Fragment {
     private static final String PLANET_ID = "10";
     private boolean showData = true;
     private StarWarsApiService starWarsApiService;
+    String imageUrl;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -69,7 +74,7 @@ public class FragmentKamino extends Fragment {
         buttonLike = view.findViewById(R.id.btnlike_id);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://private-anon-59e7f97310-starwars2.apiary-mock.com/")
+                .baseUrl(Constants.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -90,12 +95,13 @@ public class FragmentKamino extends Fragment {
         likes = prefs.getInt(KEY_LIKES_COUNT, 0);
         updateLikesUI();
 
-        if (hasLiked) {
-            buttonLike.setEnabled(false);
-        }
 
         buttonLike.setOnClickListener(v -> {
-            likePlanet();
+            if (hasLiked) {
+                likePlanet();
+            } else {
+                Toast.makeText(getContext(), "You have already liked once", Toast.LENGTH_SHORT).show();
+            }
         });
 
 
@@ -104,6 +110,8 @@ public class FragmentKamino extends Fragment {
 
 
     private void getKaminoPlanet() {
+        buttonLike.setVisibility(View.VISIBLE);
+        textViewPlanetLikes.setVisibility(View.VISIBLE);
         Call<Planet> call = starWarsApiService.getKaminoPlanet(Integer.parseInt(PLANET_ID));
         call.enqueue(new Callback<Planet>() {
             @Override
@@ -122,13 +130,16 @@ public class FragmentKamino extends Fragment {
                         textViewPlanetPopulation.setText("Population: " + planet.getPopulation());
                         likes= planet.getLikes();
                         textViewPlanetLikes.setText("Likes: "+likes);
-                        String imageUrl = planet.getImageUrl(); // Your URL here
-                        Glide.with(getContext())
-                                .load(imageUrl)
-                                .apply(new RequestOptions()
-                                        .placeholder(R.drawable.solid_color_placeholder)
-                                        .error(R.drawable.kaminostar))
-                                .into(imgViewPlanet);
+                        imageUrl = planet.getImageUrl();
+
+                        if (getContext() != null) {
+                            Glide.with(getContext())
+                                    .load(imageUrl)
+                                    .apply(new RequestOptions()
+                                            .placeholder(R.drawable.solid_color_placeholder)
+                                            .error(R.drawable.kaminostar))
+                                    .into(imgViewPlanet);
+                        }
 
 
                     } else {
@@ -145,18 +156,18 @@ public class FragmentKamino extends Fragment {
         });
     }
 
-
-
     private void clearPlanetData() {
-        textViewPlanetName.setText("");
-        textViewPlanetRotation.setText("");
-        textViewPlanetOrbital.setText("");
-        textViewPlanetDiameter.setText("");
-        textViewPlanetClimate.setText("");
-        textViewPlanetGravity.setText("");
-        textViewPlanetTerrain.setText("");
-        textViewPlanetSurfaceWater.setText("");
-        textViewPlanetLikes.setText("");
+        textViewPlanetName.setVisibility(View.INVISIBLE);
+        textViewPlanetRotation.setVisibility(View.INVISIBLE);
+        textViewPlanetOrbital.setVisibility(View.INVISIBLE);
+        textViewPlanetDiameter.setVisibility(View.INVISIBLE);
+        textViewPlanetClimate.setVisibility(View.INVISIBLE);
+        textViewPlanetGravity.setVisibility(View.INVISIBLE);
+        textViewPlanetTerrain.setVisibility(View.INVISIBLE);
+        textViewPlanetSurfaceWater.setVisibility(View.INVISIBLE);
+        textViewPlanetPopulation.setVisibility(View.INVISIBLE);
+        textViewPlanetLikes.setVisibility(View.INVISIBLE);
+        buttonLike.setVisibility(View.INVISIBLE);
     }
 
 
@@ -176,7 +187,8 @@ public class FragmentKamino extends Fragment {
                     editor.putInt(KEY_LIKES_COUNT, likes);
                     editor.apply();
                     updateLikesUI();
-                    buttonLike.setEnabled(false);
+                    hasLiked = false;
+                    //buttonLike.setEnabled(false);
                 } else {
                     Log.d("FragmentKamino", "Failed to like planet: " + response.code());
                 }
@@ -187,6 +199,7 @@ public class FragmentKamino extends Fragment {
             }
         });
     }
+
 
     private void updateLikesUI() {
         textViewPlanetLikes.setText("Likes: " + likes);

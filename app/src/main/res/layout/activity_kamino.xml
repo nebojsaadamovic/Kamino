@@ -7,10 +7,10 @@
     android:layout_height="match_parent"
     tools:context=".activitykamino.KaminoActivity"
     tools:openDrawer="start"
+    android:background="@drawable/universum"
     android:id="@+id/drawerlayout_id"
     >
 
-    <!-- Main Content -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -23,21 +23,18 @@
             android:scaleType="centerCrop"
             android:layout_gravity="top" />
 
-        <!-- Toolbar -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/purple_200"
+            android:background="@drawable/toolbar_background"
             app:title="Star Wars Kamino"
             app:titleTextColor="#ffffff" />
 
-
         <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:id="@+id/framelayout_id"
-            />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 
@@ -47,7 +44,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/nav_menu" />
+        app:menu="@menu/nav_menu"
+        android:background="@drawable/navimg"/>
 
 
 

@@ -6,31 +6,45 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="@android:color/white"
+    android:background="@drawable/universum"
     tools:context=".activitykamino.ResidentDetailActivity">
 
-    <ImageView
-        android:id="@+id/img_detail"
-        android:layout_width="match_parent"
+    <androidx.cardview.widget.CardView
+        android:layout_marginBottom="16dp"
+        android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_gravity="center_horizontal"
-        android:scaleType="centerCrop"
-        android:background="@drawable/rounded_corners"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginStart="115dp"
+        app:cardCornerRadius="100dp"
+        android:elevation="30dp"
+        app:cardElevation="30dp"
+        android:outlineSpotShadowColor="@color/white"
+        android:outlineAmbientShadowColor="@color/white"
+        tools:targetApi="p">
+
+        <ImageView
+            android:id="@+id/img_detail"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="centerCrop"
+            android:layout_marginBottom="16dp"/>
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/txt_name_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Name: Luke Mix"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:layout_marginBottom="8dp"/>
 
     <TextView
         android:id="@+id/txt_height_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Height: 172 cm"
         android:textSize="18sp"
         android:textColor="@color/teal_200"
         android:layout_marginBottom="8dp"/>
@@ -39,6 +53,7 @@
         android:id="@+id/txt_hair_color_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Hair Color: Blonde"
         android:textSize="18sp"
         android:textColor="@color/teal_200"
         android:layout_marginBottom="8dp"/>
@@ -47,6 +62,7 @@
         android:id="@+id/txt_skin_color_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Skin Color: Fair"
         android:textSize="18sp"
         android:textColor="@color/teal_200"
         android:layout_marginBottom="8dp"/>
@@ -55,6 +71,7 @@
         android:id="@+id/txt_eye_color_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Eye Color: Blue"
         android:textSize="18sp"
         android:textColor="@color/teal_200"
         android:layout_marginBottom="8dp"/>
@@ -63,6 +80,7 @@
         android:id="@+id/txt_birth_day_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Birth Day: 19 BBY"
         android:textSize="18sp"
         android:textColor="@color/teal_200"
         android:layout_marginBottom="8dp"/>
@@ -71,6 +89,7 @@
         android:id="@+id/txt_gender_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Gender: Male"
         android:textSize="18sp"
         android:textColor="@color/teal_200"
         android:layout_marginBottom="8dp"/>

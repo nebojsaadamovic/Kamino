@@ -10,9 +10,7 @@ public class RetrofitClient {
 
     public static Retrofit getClient() {
         if (retrofit == null) {
-
             OkHttpClient client = new OkHttpClient.Builder().build();
-
             retrofit = new Retrofit.Builder()
                     .baseUrl(Constants.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
