@@ -1,15 +1,10 @@
 package com.masterandroid.kamino.activitykamino;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,21 +12,16 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.masterandroid.kamino.R;
-import com.masterandroid.kamino.data.api.Constants;
-import com.masterandroid.kamino.data.api.StarWarsApiService;
-import com.masterandroid.kamino.data.model.LikeRequest;
 import com.masterandroid.kamino.data.model.Planet;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import com.masterandroid.kamino.viewmodel.FragmentKaminoViewModel;
 
 public class FragmentKamino extends Fragment {
+
     private TextView textViewPlanetName;
     private TextView textViewPlanetRotation;
     private TextView textViewPlanetOrbital;
@@ -44,20 +34,11 @@ public class FragmentKamino extends Fragment {
     private TextView textViewPlanetLikes;
     private ImageView imgViewPlanet;
     private Button buttonLike;
-    private boolean hasLiked = false;
-    private int likes = 0;
-    private static final String PREFS_NAME = "app_prefs";
-    private static final String KEY_HAS_LIKED = "has_liked";
-    private static final String KEY_LIKES_COUNT = "likes_count";
-    private static final String PLANET_ID = "10";
-    private boolean showData = true;
-    private StarWarsApiService starWarsApiService;
-    String imageUrl;
 
-    @SuppressLint("MissingInflatedId")
+    private FragmentKaminoViewModel kaminoViewModel;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_kamino, container, false);
 
         textViewPlanetName = view.findViewById(R.id.name_id);
@@ -73,87 +54,60 @@ public class FragmentKamino extends Fragment {
         imgViewPlanet = view.findViewById(R.id.imageViewPlanet_id);
         buttonLike = view.findViewById(R.id.btnlike_id);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        starWarsApiService = retrofit.create(StarWarsApiService.class);
+        kaminoViewModel = new ViewModelProvider(this).get(FragmentKaminoViewModel.class);
 
         if (getArguments() != null) {
-            showData = getArguments().getBoolean("showData", true);
-        }
-        if (showData) {
-            getKaminoPlanet();
-        } else {
-            clearPlanetData();
+            boolean showData = getArguments().getBoolean("showData", true);
+            kaminoViewModel.setShowData(showData);
         }
 
-
-        SharedPreferences prefs = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        hasLiked = prefs.getBoolean(KEY_HAS_LIKED, false);
-        likes = prefs.getInt(KEY_LIKES_COUNT, 0);
-        updateLikesUI();
-
-
-        buttonLike.setOnClickListener(v -> {
-            if (hasLiked) {
-                likePlanet();
+        kaminoViewModel.getPlanetLiveData().observe(getViewLifecycleOwner(), planet -> {
+            if (planet != null) {
+                updateUI(planet);
             } else {
+                clearPlanetData();
+            }
+        });
+
+        kaminoViewModel.getLikesLiveData().observe(getViewLifecycleOwner(), likes -> {
+            textViewPlanetLikes.setText("Likes: " + likes);
+        });
+
+        kaminoViewModel.getHasLikedLiveData().observe(getViewLifecycleOwner(), hasLiked -> {
+            if (hasLiked != null && hasLiked) {
+                buttonLike.setEnabled(false); // Disable button if already liked
                 Toast.makeText(getContext(), "You have already liked once", Toast.LENGTH_SHORT).show();
             }
         });
 
+        buttonLike.setOnClickListener(v -> {
+            int planetId = 10;
+            kaminoViewModel.likePlanet(planetId);
+        });
 
         return view;
     }
 
+    private void updateUI(Planet planet) {
+        textViewPlanetName.setText("Name: " + planet.getName());
+        textViewPlanetRotation.setText("Rotation Period: " + planet.getRotationPeriod());
+        textViewPlanetOrbital.setText("Orbital Period: " + planet.getOrbitalPeriod());
+        textViewPlanetDiameter.setText("Diameter: " + planet.getDiameter());
+        textViewPlanetClimate.setText("Climate: " + planet.getClimate());
+        textViewPlanetGravity.setText("Gravity: " + planet.getGravity());
+        textViewPlanetTerrain.setText("Terrain: " + planet.getTerrain());
+        textViewPlanetSurfaceWater.setText("Surface Water: " + planet.getSurfaceWater());
+        textViewPlanetPopulation.setText("Population: " + planet.getPopulation());
 
-    private void getKaminoPlanet() {
+        Glide.with(getContext())
+                .load(planet.getImageUrl())
+                .apply(new RequestOptions()
+                        .placeholder(R.drawable.solid_color_placeholder)
+                        .error(R.drawable.kaminostar))
+                .into(imgViewPlanet);
+
         buttonLike.setVisibility(View.VISIBLE);
         textViewPlanetLikes.setVisibility(View.VISIBLE);
-        Call<Planet> call = starWarsApiService.getKaminoPlanet(Integer.parseInt(PLANET_ID));
-        call.enqueue(new Callback<Planet>() {
-            @Override
-            public void onResponse(@NonNull Call<Planet> call, @NonNull Response<Planet> response) {
-                if (response.isSuccessful()) {
-                    Planet planet = response.body();
-                    if (planet != null) {
-                        textViewPlanetName.setText("Name: " + planet.getName());
-                        textViewPlanetRotation.setText("Rotation Period: " + planet.getRotationPeriod());
-                        textViewPlanetOrbital.setText("Orbital Period: " + planet.getOrbitalPeriod());
-                        textViewPlanetDiameter.setText("Diameter: " + planet.getDiameter());
-                        textViewPlanetClimate.setText("Climate: " + planet.getClimate());
-                        textViewPlanetGravity.setText("Gravity: " + planet.getGravity());
-                        textViewPlanetTerrain.setText("Terrain: " + planet.getTerrain());
-                        textViewPlanetSurfaceWater.setText("Surface Water: " + planet.getSurfaceWater());
-                        textViewPlanetPopulation.setText("Population: " + planet.getPopulation());
-                        likes= planet.getLikes();
-                        textViewPlanetLikes.setText("Likes: "+likes);
-                        imageUrl = planet.getImageUrl();
-
-                        if (getContext() != null) {
-                            Glide.with(getContext())
-                                    .load(imageUrl)
-                                    .apply(new RequestOptions()
-                                            .placeholder(R.drawable.solid_color_placeholder)
-                                            .error(R.drawable.kaminostar))
-                                    .into(imgViewPlanet);
-                        }
-
-
-                    } else {
-                        Log.d("FragmentKamino", "Response body is null");
-                    }
-                } else {
-                    Log.d("FragmentKamino", "Response not successful: " + response.code());
-                }
-            }
-            @Override
-            public void onFailure(Call<Planet> call, Throwable t) {
-                Log.e("FragmentKamino", "API call failure", t);
-            }
-        });
     }
 
     private void clearPlanetData() {
@@ -168,41 +122,6 @@ public class FragmentKamino extends Fragment {
         textViewPlanetPopulation.setVisibility(View.INVISIBLE);
         textViewPlanetLikes.setVisibility(View.INVISIBLE);
         buttonLike.setVisibility(View.INVISIBLE);
-    }
-
-
-
-    private void likePlanet() {
-        LikeRequest likeRequest = new LikeRequest(Integer.parseInt(PLANET_ID));
-        Call<Void> call = starWarsApiService.likePlanet(Integer.parseInt(PLANET_ID), likeRequest);
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                if (response.isSuccessful()) {
-                    hasLiked = true;
-                    likes++;
-                    SharedPreferences prefs = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putBoolean(KEY_HAS_LIKED, hasLiked);
-                    editor.putInt(KEY_LIKES_COUNT, likes);
-                    editor.apply();
-                    updateLikesUI();
-                    hasLiked = false;
-                    //buttonLike.setEnabled(false);
-                } else {
-                    Log.d("FragmentKamino", "Failed to like planet: " + response.code());
-                }
-            }
-            @Override
-            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                Log.e("FragmentKamino", "Failed to make like request", t);
-            }
-        });
-    }
-
-
-    private void updateLikesUI() {
-        textViewPlanetLikes.setText("Likes: " + likes);
     }
 }
 

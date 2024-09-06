@@ -1,5 +1,6 @@
 package com.masterandroid.kamino.activitykamino;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -20,24 +21,30 @@ import java.util.List;
 
 public class MyAdaptorResident extends RecyclerView.Adapter<MyAdaptorResident.MyViewHolder> {
 
-    List<Resident> residents;
-    Context context;
+    private List<Resident> residents;
+    private final Context context;
 
-    public  MyAdaptorResident(Context context , List<Resident> residents){
-       this.context=context;
-        this.residents=residents;
+    public MyAdaptorResident(Context context) {
+        this.context = context;
+    }
+
+    public void setResidents(List<Resident> residents) {
+        this.residents = residents;
+        notifyDataSetChanged();
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater=LayoutInflater.from(parent.getContext());
-        View view=  inflater.inflate(R.layout.single_items_list_resident, parent,false);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View view = inflater.inflate(R.layout.single_items_list_resident, parent, false);
         return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        if (residents == null || position >= residents.size()) return;
+
         Resident resident = residents.get(position);
         holder.textViewName.setText(resident.getName());
 
@@ -69,11 +76,10 @@ public class MyAdaptorResident extends RecyclerView.Adapter<MyAdaptorResident.My
 
     @Override
     public int getItemCount() {
-        return residents.size();
+        return residents != null ? residents.size() : 0;
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder
-    {
+    class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView textViewName;
         public ImageView imageView;
         Button btnViewDetails;
@@ -82,9 +88,10 @@ public class MyAdaptorResident extends RecyclerView.Adapter<MyAdaptorResident.My
             super(itemView);
             textViewName = itemView.findViewById(R.id.txtname_id);
             imageView = itemView.findViewById(R.id.img_id);
-            btnViewDetails=itemView.findViewById(R.id.btn_details);
+            btnViewDetails = itemView.findViewById(R.id.btn_details);
         }
     }
+
 
 
 

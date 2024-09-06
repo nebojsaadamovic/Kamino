@@ -27,7 +27,7 @@ public class Planet {
     @SerializedName("image_url")
     private String imageUrl;
     private int likes;
-
+    private boolean liked;
 
     public String getName() {
         return name;
@@ -139,5 +139,13 @@ public class Planet {
 
     public void setLikes(int likes) {
         this.likes = likes;
+    }
+
+    public boolean isLiked() {
+        return liked;
+    }
+
+    public void setLiked(boolean liked) {
+        this.liked = liked;
     }
 }

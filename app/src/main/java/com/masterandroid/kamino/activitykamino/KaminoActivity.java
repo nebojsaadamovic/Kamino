@@ -2,7 +2,6 @@ package com.masterandroid.kamino.activitykamino;
 
 import android.animation.ValueAnimator;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,34 +16,29 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.navigation.NavigationView;
 import com.masterandroid.kamino.R;
-import com.masterandroid.kamino.data.api.RetrofitClient;
-
-import retrofit2.Retrofit;
+import com.masterandroid.kamino.viewmodel.KaminoActivityViewModel;
 
 public class KaminoActivity extends AppCompatActivity {
 
-    Toolbar toolbar;
-    NavigationView navigationView;
-    DrawerLayout drawerLayout;
-    ActionBarDrawerToggle actionBarDrawerToggle;
-    ImageView imgKamino;
-    private boolean isExpanded = false;
+    private Toolbar toolbar;
+    private NavigationView navigationView;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
+    private ImageView imgKamino;
+    private KaminoActivityViewModel kaminoViewModel;
     private final int HEIGHT_EXPAND_DP = 100;
-    private static boolean showData = true;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kamino);
 
-        imgKamino=findViewById(R.id.imgkamino_id);
-
+        imgKamino = findViewById(R.id.imgkamino_id);
         toolbar = findViewById(R.id.toolbar_id);
         setSupportActionBar(toolbar);
 
@@ -54,13 +48,7 @@ public class KaminoActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
-        Retrofit retrofitClient = RetrofitClient.getClient();
-        if (retrofitClient == null) {
-            Log.e("QRGenerate", "Retrofit client is null");
-            return;
-        }else{
-            Log.e("not", "Retrofit client is not null"+retrofitClient);
-        }
+        kaminoViewModel = new ViewModelProvider(this).get(KaminoActivityViewModel.class);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -76,32 +64,49 @@ public class KaminoActivity extends AppCompatActivity {
             }
         });
 
-
         imgKamino.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                animateImageViewHeight();
-                FragmentKamino fragmentKamino = new FragmentKamino();
-                Bundle args = new Bundle();
-                args.putBoolean("showData", showData);
-                fragmentKamino.setArguments(args);
-                getSupportFragmentManager().beginTransaction().replace(R.id.framelayout_id, fragmentKamino).commit();
-                showData = !showData;
+
+
+                // Posmatranje promena u ViewModel-u i ažuriranje UI-a
+                kaminoViewModel.getIsImageExpanded().observe(KaminoActivity.this, new Observer<Boolean>() {
+                    @Override
+                    public void onChanged(Boolean isExpanded) {
+                        animateImageViewHeight(isExpanded);
+                    }
+                });
+
+                kaminoViewModel.getShowData().observe(KaminoActivity.this, new Observer<Boolean>() {
+                    @Override
+                    public void onChanged(Boolean showData) {
+                        updateFragment(showData);
+                    }
+                });
+
+                kaminoViewModel.toggleImageExpanded();
+                kaminoViewModel.toggleShowData();
+
             }
         });
-
-
-
-
     }
 
 
+    private void updateFragment(boolean showData) {
+        FragmentKamino fragmentKamino = new FragmentKamino();
+        Bundle args = new Bundle();
+        args.putBoolean("showData", showData);
+        fragmentKamino.setArguments(args);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.framelayout_id, fragmentKamino)
+                .commit();
+    }
 
-    private void animateImageViewHeight() {
+    private void animateImageViewHeight(boolean isExpanded) {
         final int dpToPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, HEIGHT_EXPAND_DP, getResources().getDisplayMetrics());
         final ViewGroup.LayoutParams layoutParams = imgKamino.getLayoutParams();
 
-        final int targetHeight = isExpanded ? layoutParams.height - dpToPx : layoutParams.height + dpToPx;
+        final int targetHeight = isExpanded ? layoutParams.height + dpToPx : layoutParams.height - dpToPx;
 
         ValueAnimator animator = ValueAnimator.ofInt(layoutParams.height, targetHeight);
         animator.setDuration(500);
@@ -116,13 +121,5 @@ public class KaminoActivity extends AppCompatActivity {
         });
 
         animator.start();
-        isExpanded = !isExpanded;
     }
-
-
-
-
-
-
-
 }

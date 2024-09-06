@@ -31,10 +31,15 @@
             app:title="Star Wars Kamino"
             app:titleTextColor="#ffffff" />
 
-        <FrameLayout
-            android:id="@+id/framelayout_id"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <FrameLayout
+                android:id="@+id/framelayout_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </ScrollView>
 
     </LinearLayout>
 
@@ -46,7 +51,4 @@
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/nav_menu"
         android:background="@drawable/navimg"/>
-
-
-
 </androidx.drawerlayout.widget.DrawerLayout>

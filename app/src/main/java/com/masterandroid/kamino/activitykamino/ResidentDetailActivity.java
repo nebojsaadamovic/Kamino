@@ -1,21 +1,24 @@
 package com.masterandroid.kamino.activitykamino;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.masterandroid.kamino.R;
+import com.masterandroid.kamino.viewmodel.ResidentDetailViewModel;
 
 public class ResidentDetailActivity extends AppCompatActivity {
 
     private ImageView imgDetail;
     private TextView txtNameDetail, txtHeightDetail, txtHairColorDetail, txtSkinColorDetail,
             txtEyeColorDetail, txtBirthDayDetail, txtGenderDetail;
+
+    private ResidentDetailViewModel viewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,36 +34,35 @@ public class ResidentDetailActivity extends AppCompatActivity {
         txtBirthDayDetail = findViewById(R.id.txt_birth_day_detail);
         txtGenderDetail = findViewById(R.id.txt_gender_detail);
 
-
-        Intent intent = getIntent();
-        if (intent != null) {
-            String name = intent.getStringExtra("name");
-            String height = intent.getStringExtra("height");
-            String hairColor = intent.getStringExtra("hair_color");
-            String skinColor = intent.getStringExtra("skin_color");
-            String eyeColor = intent.getStringExtra("eye_color");
-            String birthDay = intent.getStringExtra("birth_day");
-            String gender = intent.getStringExtra("gender");
-            String imageUrl = intent.getStringExtra("image_url");
+        viewModel = new ViewModelProvider(this).get(ResidentDetailViewModel.class);
 
 
-            txtNameDetail.setText("Name: " + name);
-            txtHeightDetail.setText("Height: " + height);
-            txtHairColorDetail.setText("Hair Color: " + hairColor);
-            txtSkinColorDetail.setText("Skin Color: " + skinColor);
-            txtEyeColorDetail.setText("Eye Color: " + eyeColor);
-            txtBirthDayDetail.setText("Birth Day: " + birthDay);
-            txtGenderDetail.setText("Gender: " + gender);
+        if (getIntent() != null) {
+            String name = getIntent().getStringExtra("name");
+            String height = getIntent().getStringExtra("height");
+            String hairColor = getIntent().getStringExtra("hair_color");
+            String skinColor = getIntent().getStringExtra("skin_color");
+            String eyeColor = getIntent().getStringExtra("eye_color");
+            String birthDay = getIntent().getStringExtra("birth_day");
+            String gender = getIntent().getStringExtra("gender");
+            String imageUrl = getIntent().getStringExtra("image_url");
 
+            viewModel.setResidentDetails(name, height, hairColor, skinColor, eyeColor, birthDay, gender, imageUrl);
+        }
 
+        viewModel.getName().observe(this, name -> txtNameDetail.setText("Name: " + name));
+        viewModel.getHeight().observe(this, height -> txtHeightDetail.setText("Height: " + height));
+        viewModel.getHairColor().observe(this, hairColor -> txtHairColorDetail.setText("Hair Color: " + hairColor));
+        viewModel.getSkinColor().observe(this, skinColor -> txtSkinColorDetail.setText("Skin Color: " + skinColor));
+        viewModel.getEyeColor().observe(this, eyeColor -> txtEyeColorDetail.setText("Eye Color: " + eyeColor));
+        viewModel.getBirthDay().observe(this, birthDay -> txtBirthDayDetail.setText("Birth Day: " + birthDay));
+        viewModel.getGender().observe(this, gender -> txtGenderDetail.setText("Gender: " + gender));
+        viewModel.getImageUrl().observe(this, imageUrl -> {
             Glide.with(getApplicationContext())
                     .load(imageUrl)
                     .placeholder(R.drawable.myprofile)
                     .error(R.drawable.solid_color_placeholder)
                     .into(imgDetail);
-
-
-        }
-
+        });
     }
 }

@@ -12,7 +12,7 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
+        multiDexEnabled=true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -51,5 +51,12 @@ dependencies {
     implementation(libs.appcompat.v160)
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
+    implementation ("androidx.core:core:1.10.1")
+    implementation ("androidx.multidex:multidex:2.0.1")
+
+
+
 
 }
