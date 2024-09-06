@@ -1,7 +1,6 @@
 package com.masterandroid.kamino.activitykamino;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.masterandroid.kamino.R;
@@ -98,14 +96,11 @@ public class FragmentKamino extends Fragment {
         textViewPlanetTerrain.setText("Terrain: " + planet.getTerrain());
         textViewPlanetSurfaceWater.setText("Surface Water: " + planet.getSurfaceWater());
         textViewPlanetPopulation.setText("Population: " + planet.getPopulation());
-
-        Glide.with(getContext())
+        Glide.with(requireContext())
                 .load(planet.getImageUrl())
                 .apply(new RequestOptions()
-                        .placeholder(R.drawable.solid_color_placeholder)
-                        .error(R.drawable.kaminostar))
+                        .error(R.drawable.solid_color_placeholder))
                 .into(imgViewPlanet);
-
         buttonLike.setVisibility(View.VISIBLE);
         textViewPlanetLikes.setVisibility(View.VISIBLE);
     }
@@ -124,4 +119,3 @@ public class FragmentKamino extends Fragment {
         buttonLike.setVisibility(View.INVISIBLE);
     }
 }
-
