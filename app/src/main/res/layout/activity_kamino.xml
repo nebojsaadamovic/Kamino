@@ -5,23 +5,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activitykamino.KaminoActivity"
+    tools:context=".activitykamino.HomeActivity"
     tools:openDrawer="start"
-    android:background="@drawable/universum"
+    android:background="@drawable/star"
     android:id="@+id/drawerlayout_id"
     >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-        <ImageView
-            android:id="@+id/imgkamino_id"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:src="@drawable/kaminostar"
-            android:scaleType="centerCrop"
-            android:layout_gravity="top" />
+        android:orientation="vertical"
+        android:gravity="center">
+
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_id"
@@ -30,6 +25,19 @@
             android:background="@drawable/toolbar_background"
             app:title="Star Wars Kamino"
             app:titleTextColor="#ffffff" />
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/imgkamino_id"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:src="@drawable/kaminostar"
+            android:layout_marginTop="60dp"
+            android:layout_marginBottom="60dp"
+            app:civ_border_color="#3f51b5"
+            app:civ_border_width="4dp"
+            app:civ_shadow="true"
+            app:civ_shadow_radius="10dp"
+            app:civ_shadow_color="#3f51b5"/>
 
         <ScrollView
             android:layout_width="match_parent"
