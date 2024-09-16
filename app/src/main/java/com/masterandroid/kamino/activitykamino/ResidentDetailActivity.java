@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.masterandroid.kamino.R;
-import com.masterandroid.kamino.viewmodel.ResidentDetailViewModel;
+import com.masterandroid.kamino.viewmodel.ResidentViewModel;
 
 public class ResidentDetailActivity extends AppCompatActivity {
 
@@ -18,7 +18,7 @@ public class ResidentDetailActivity extends AppCompatActivity {
     private TextView txtNameDetail, txtHeightDetail, txtHairColorDetail, txtSkinColorDetail,
             txtEyeColorDetail, txtBirthDayDetail, txtGenderDetail;
 
-    private ResidentDetailViewModel viewModel;
+    private ResidentViewModel residentViewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,35 +34,39 @@ public class ResidentDetailActivity extends AppCompatActivity {
         txtBirthDayDetail = findViewById(R.id.txt_birth_day_detail);
         txtGenderDetail = findViewById(R.id.txt_gender_detail);
 
-        viewModel = new ViewModelProvider(this).get(ResidentDetailViewModel.class);
+        residentViewModel = new ViewModelProvider(this).get(ResidentViewModel.class);
+
+
 
 
         if (getIntent() != null) {
-            String name = getIntent().getStringExtra("name");
-            String height = getIntent().getStringExtra("height");
-            String hairColor = getIntent().getStringExtra("hair_color");
-            String skinColor = getIntent().getStringExtra("skin_color");
-            String eyeColor = getIntent().getStringExtra("eye_color");
-            String birthDay = getIntent().getStringExtra("birth_day");
-            String gender = getIntent().getStringExtra("gender");
-            String imageUrl = getIntent().getStringExtra("image_url");
+            int id = getIntent().getIntExtra("id", -1); // Koristite getIntExtra za Integer
+            residentViewModel.checkInternetConnectionResidentDetails(id);
 
-            viewModel.setResidentDetails(name, height, hairColor, skinColor, eyeColor, birthDay, gender, imageUrl);
+            residentViewModel.getResidentLiveData(Integer.valueOf(id)).observe(this, resident -> {
+                if (resident != null) {
+                    txtNameDetail.setText("Name: " + resident.getName());
+                    txtHeightDetail.setText("Height: " + resident.getHeight());
+                    txtHairColorDetail.setText("Hair Color: " + resident.getHairColor());
+                    txtSkinColorDetail.setText("Skin Color: " + resident.getSkinColor());
+                    txtEyeColorDetail.setText("Eye Color: " + resident.getEyeColor());
+                    txtBirthDayDetail.setText("Birth Day: " + resident.getBirthYear());
+                    txtGenderDetail.setText("Gender: " + resident.getGender());
+
+                    Glide.with(this)
+                            .load(resident.getImageUrl())
+                            .placeholder(R.drawable.myprofile)
+                            .error(R.drawable.solid_color_placeholder)
+                            .into(imgDetail);
+
+                }
+            });
         }
 
-        viewModel.getName().observe(this, name -> txtNameDetail.setText("Name: " + name));
-        viewModel.getHeight().observe(this, height -> txtHeightDetail.setText("Height: " + height));
-        viewModel.getHairColor().observe(this, hairColor -> txtHairColorDetail.setText("Hair Color: " + hairColor));
-        viewModel.getSkinColor().observe(this, skinColor -> txtSkinColorDetail.setText("Skin Color: " + skinColor));
-        viewModel.getEyeColor().observe(this, eyeColor -> txtEyeColorDetail.setText("Eye Color: " + eyeColor));
-        viewModel.getBirthDay().observe(this, birthDay -> txtBirthDayDetail.setText("Birth Day: " + birthDay));
-        viewModel.getGender().observe(this, gender -> txtGenderDetail.setText("Gender: " + gender));
-        viewModel.getImageUrl().observe(this, imageUrl -> {
-            Glide.with(getApplicationContext())
-                    .load(imageUrl)
-                    .placeholder(R.drawable.myprofile)
-                    .error(R.drawable.solid_color_placeholder)
-                    .into(imgDetail);
-        });
+
     }
+
+
+
+
 }

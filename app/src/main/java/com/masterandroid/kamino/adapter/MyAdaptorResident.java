@@ -1,4 +1,4 @@
-package com.masterandroid.kamino.activitykamino;
+package com.masterandroid.kamino.adapter;
 
 
 import android.content.Context;
@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.masterandroid.kamino.R;
+import com.masterandroid.kamino.activitykamino.ResidentDetailActivity;
 import com.masterandroid.kamino.data.model.Resident;
 
 import java.util.List;
@@ -62,14 +63,7 @@ public class MyAdaptorResident extends RecyclerView.Adapter<MyAdaptorResident.My
 
         holder.btnViewDetails.setOnClickListener(v -> {
             Intent intent = new Intent(context, ResidentDetailActivity.class);
-            intent.putExtra("name", resident.getName());
-            intent.putExtra("height", resident.getHeight());
-            intent.putExtra("hair_color", resident.getHairColor());
-            intent.putExtra("skin_color", resident.getSkinColor());
-            intent.putExtra("eye_color", resident.getEyeColor());
-            intent.putExtra("birth_day", resident.getBirthYear());
-            intent.putExtra("gender", resident.getGender());
-            intent.putExtra("image_url", resident.getImageUrl());
+            intent.putExtra("id", resident.getId());
             context.startActivity(intent);
         });
     }

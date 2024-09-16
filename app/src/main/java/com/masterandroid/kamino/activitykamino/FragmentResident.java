@@ -12,15 +12,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.masterandroid.kamino.R;
+import com.masterandroid.kamino.adapter.MyAdaptorResident;
 import com.masterandroid.kamino.data.model.Resident;
-import com.masterandroid.kamino.viewmodel.FragmentResidentViewModel;
+import com.masterandroid.kamino.data.repository.PlanetRepository;
+import com.masterandroid.kamino.viewmodel.ResidentViewModel;
 
 import java.util.List;
 
 public class FragmentResident extends Fragment {
-    private FragmentResidentViewModel viewModel;
+
+
+    private ResidentViewModel residentViewModel;
     private RecyclerView recyclerView;
-    private MyAdaptorResident myAdaptorResident;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -29,15 +32,20 @@ public class FragmentResident extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerview_id);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        myAdaptorResident = new MyAdaptorResident(getContext());
+
+        MyAdaptorResident myAdaptorResident = new MyAdaptorResident(getContext());
         recyclerView.setAdapter(myAdaptorResident);
 
-        viewModel = new ViewModelProvider(this).get(FragmentResidentViewModel.class);
-        viewModel.getResidents().observe(getViewLifecycleOwner(), new Observer<List<Resident>>() {
+        residentViewModel = new ViewModelProvider(this).get(ResidentViewModel.class);
+
+       residentViewModel.setPlanetId(10); //this data is hardcode, later i will change it
+
+        residentViewModel.getAllResidentsByPlanet().observe(getViewLifecycleOwner(), new Observer<List<Resident>>() {
             @Override
             public void onChanged(List<Resident> residents) {
                 if (residents != null) {
                     myAdaptorResident.setResidents(residents);
+
                 }
             }
         });
