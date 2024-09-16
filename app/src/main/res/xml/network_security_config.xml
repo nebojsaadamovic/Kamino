@@ -6,5 +6,10 @@
         <domain includeSubdomains="true">vignette3.wikia.nocookie.net</domain>
         <domain includeSubdomains="true">www.cinemablend.com</domain>
         <domain includeSubdomains="true">vignette4.wikia.nocookie.net</domain>
+        <domain includeSubdomains="true">apiary-mock.com</domain>
+        <domain includeSubdomains="true">private-anon-68b9b71b0b-starwars2.apiary-mock.com</domain>
+     m
+        <domain includeSubdomains="true">private-anon-9bf14e01b4-starwars2.apiary-mock.com</domain>
+
     </domain-config>
 </network-security-config>
