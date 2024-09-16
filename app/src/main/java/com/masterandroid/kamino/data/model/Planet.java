@@ -1,6 +1,11 @@
 
 package com.masterandroid.kamino.data.model;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -8,26 +13,69 @@ import java.util.List;
 import lombok.Data;
 
 @Data
+@Entity(tableName = "planet")
 public class Planet {
+    @PrimaryKey(autoGenerate = true)
+    private int id;
     private String name;
     @SerializedName("rotation_period")
+    @ColumnInfo(name = "rotation_period")
     private String rotationPeriod;
     @SerializedName("orbital_period")
+    @ColumnInfo(name = "orbital_period")
     private String orbitalPeriod;
     private String diameter;
     private String climate;
     private String gravity;
     private String terrain;
     @SerializedName("surface_water")
+    @ColumnInfo(name = "surface_water")
     private String surfaceWater;
     private String population;
-    private List<String> residents;
+    @Ignore
+    private List<String> residents;  // Room će ignorisati ovo polje //kasnije ovu stavku izbrisati , ima repository
     private String created;
     private String edited;
     @SerializedName("image_url")
+    @ColumnInfo(name = "image_url")
     private String imageUrl;
+    @SerializedName("likes")
     private int likes;
     private boolean liked;
+    private boolean active;
+
+    public Planet(String name, String rotationPeriod, String orbitalPeriod, String diameter, String climate, String gravity, String terrain, String surfaceWater, String population, List<String> residents, String created, String edited, String imageUrl, int likes, boolean liked) {
+        this.name = name;
+        this.rotationPeriod = rotationPeriod;
+        this.orbitalPeriod = orbitalPeriod;
+        this.diameter = diameter;
+        this.climate = climate;
+        this.gravity = gravity;
+        this.terrain = terrain;
+        this.surfaceWater = surfaceWater;
+        this.population = population;
+        this.residents = residents;
+        this.created = created;
+        this.edited = edited;
+        this.imageUrl = imageUrl;
+        this.likes = likes;
+        this.liked = liked;
+    }
+
+    public Planet() {
+
+    }
+
+    public Planet(String name, String population) {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -147,5 +195,37 @@ public class Planet {
 
     public void setLiked(boolean liked) {
         this.liked = liked;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Planet{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", rotationPeriod='" + rotationPeriod + '\'' +
+                ", orbitalPeriod='" + orbitalPeriod + '\'' +
+                ", diameter='" + diameter + '\'' +
+                ", climate='" + climate + '\'' +
+                ", gravity='" + gravity + '\'' +
+                ", terrain='" + terrain + '\'' +
+                ", surfaceWater='" + surfaceWater + '\'' +
+                ", population='" + population + '\'' +
+                ", residents=" + residents +
+                ", created='" + created + '\'' +
+                ", edited='" + edited + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", likes=" + likes +
+                ", liked=" + liked +
+                ", active=" + active +
+                '}';
     }
 }
